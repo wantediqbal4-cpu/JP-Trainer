@@ -3,7 +3,7 @@
  * VERSI BARU: ganti CACHE_NAME supaya SW lama dibuang
  */
 
-const CACHE_NAME = 'kotoba-v3';  // <-- naik versi setiap deploy besar
+const CACHE_NAME = 'kotoba-v4';  // <-- naik versi setiap deploy besar
 const ASSETS = [
   './',
   './index.html',
