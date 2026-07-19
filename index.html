@@ -165,5 +165,57 @@
 
 <script src="data.js"></script>
 <script src="script.js"></script>
+
+<!-- PAKSA hapus semua SW lama dan cache lama setiap load -->
+<script>
+(function() {
+  if (!('serviceWorker' in navigator)) return;
+
+  // Unregister semua SW yang tidak aktif / lama
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    var promises = registrations.map(function(reg) {
+      return reg.active && reg.active.scriptURL
+        ? Promise.resolve()       // biarkan yang aktif, SW baru handle
+        : reg.unregister();
+    });
+    return Promise.all(promises);
+  });
+
+  // Hapus semua cache yang namanya bukan versi terbaru
+  var CURRENT = 'kotoba-20250719-001';
+  if ('caches' in window) {
+    caches.keys().then(function(keys) {
+      keys.forEach(function(key) {
+        if (key.indexOf(CURRENT) === -1) {
+          console.log('[App] Hapus cache lama:', key);
+          caches.delete(key);
+        }
+      });
+    });
+  }
+
+  // Register SW baru
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(function(reg) {
+        console.log('[App] SW registered:', reg.scope);
+        // Paksa update kalau ada SW baru menunggu
+        if (reg.waiting) {
+          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+        reg.addEventListener('updatefound', function() {
+          var newWorker = reg.installing;
+          newWorker.addEventListener('statechange', function() {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // Ada update → reload otomatis
+              window.location.reload();
+            }
+          });
+        });
+      })
+      .catch(function(err) { console.warn('[App] SW error:', err); });
+  });
+})();
+</script>
 </body>
 </html>
