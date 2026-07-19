@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="100" fill="#161b22"/>
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#1c2330"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="url(#bg2)"/>
+  <text x="256" y="295" font-family="serif" font-size="240" font-weight="900"
+        fill="#58a6ff" text-anchor="middle" dominant-baseline="middle"
+        letter-spacing="-4">言</text>
+  <circle cx="400" cy="128" r="38" fill="#3fb950" opacity="0.9"/>
+</svg>
